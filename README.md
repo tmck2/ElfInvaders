@@ -10,6 +10,7 @@ I wanted to mess around with p5.js some, so I wrote this Space Invaders clone wi
 - High score
 
 ## Ideas:
+- Add something similar to the Space Invaders space ship that gives bonus points
 - Revisit architecture and refactor towards entity pattern
 - Decouple a bit using a mediator
 - Change code to use p5's Vector class
