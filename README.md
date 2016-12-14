@@ -5,8 +5,6 @@ I wanted to mess around with p5.js some, so I wrote this Space Invaders clone wi
 - Refactor code
   - Go towards entity model
   - Maybe some sort of pub sub model / mediator
-x Elves through presents at Santa
-x Tweak difficulty
 - Add levels
 - Title screen
 - Game Over screen (Santa must die!)
