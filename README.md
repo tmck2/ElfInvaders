@@ -2,8 +2,11 @@
 I wanted to mess around with p5.js some, so I wrote this Space Invaders clone with a holiday twist.  It is just a demo and is not finished.
 
 ## TODO:
-- Elves through presents at Santa
-- Tweek difficulty
+- Refactor code
+  - Go towards entity model
+  - Maybe some sort of pub sub model / mediator
+x Elves through presents at Santa
+x Tweak difficulty
 - Add levels
 - Title screen
 - Game Over screen (Santa must die!)
@@ -11,6 +14,5 @@ I wanted to mess around with p5.js some, so I wrote this Space Invaders clone wi
 
 ## Ideas:
 - Add something similar to the Space Invaders space ship that gives bonus points
-- Revisit architecture and refactor towards entity pattern
 - Decouple a bit using a mediator
 - Change code to use p5's Vector class

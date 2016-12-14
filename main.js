@@ -2,9 +2,11 @@ var santa = new Santa();
 var flakes = [];
 var candy = [];
 var elves = [];
+var presents = [];
 var nomsound;
 var bellsound;
 var music;
+var musicRate = 1.0;
 
 function preload() {
   nomsound = loadSound('assets/nom.wav');
@@ -76,6 +78,22 @@ function draw() {
     elves[i].draw();
   }
   
+  // elves throw presents randomly
+  if (random(1000) < 32 - elves.length && elves.length >= 1) {
+    var elf = random(elves);
+    var p = new Present(
+      elf.x + elf.img.width * elf.scl / 2 - 12,
+      elf.y + elf.img.height * elf.scl / 2 - 12);
+    p.load();
+    presents.push(p);
+  }
+  
+  // update and draw presents
+  presents.forEach(function(present) {
+    present.update();
+    present.draw();
+  });
+  
   // collisions
   elvesToRemove = [];
   candyToRemove = [];
@@ -91,6 +109,11 @@ function draw() {
           elvesToRemove.push(j);
           candyToRemove.push(i);
           nomsound.play();
+          elves.forEach(function(e) {
+            e.xSpeed += 0.05;
+          })
+          musicRate += 0.01;
+          music.rate(musicRate);
         }
       }
     }

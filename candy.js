@@ -2,7 +2,7 @@ var Candy = function (x, y) {
   this.x = x;
   this.y = y;
   this.scl = 0.25;
-  this.ySpeed = -3;
+  this.ySpeed = -4;
 }
 
 Candy.prototype.load = function() {
