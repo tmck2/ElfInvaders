@@ -33,6 +33,7 @@ function nextWave() {
         elves[ix].y = (j + 1) * elves[j*8+i].img.height * elves[j*8+i].scl;
         elves[ix].alive = true;
         elves[ix].xSpeed = 1;
+        elves[ix].dir = 1;
     }
   }
 }
@@ -115,7 +116,7 @@ function draw() {
     else {
       // candy with elves
       for (var j = 0; j < liveElves.length; j++) {
-        if (liveElves[j].collidesWith(candy[i])) {
+        if (Entity.prototype.collidesWith.call(liveElves[j], candy[i])) {
           liveElves[j].alive = false;
           score += 10;
           candyToRemove.push(i);
@@ -127,6 +128,12 @@ function draw() {
           music.rate(musicRate);
         }
       }
+    }
+  }
+  for (var i = 0; i < presents.length; i++)
+  {
+    if (Entity.prototype.collidesWith.call(presents[i], santa)) {
+      console.log('ouch!');
     }
   }
   
