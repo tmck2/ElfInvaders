@@ -4,6 +4,7 @@ var Santa = function () {
     this.xSpeed = 0;
     this.x = (width - this.img.width) / 2;
     this.y = height - this.img.height * 1.2;
+    this.scl = 1;
   }
   
   this.load = function () {
