@@ -32,7 +32,7 @@ function nextWave() {
         elves[ix].x = (i+1) * dx;
         elves[ix].y = (j + 1) * elves[j*8+i].img.height * elves[j*8+i].scl;
         elves[ix].alive = true;
-        elves[ix].xSpeed = 1;
+        elves[ix].xvel = 1;
         elves[ix].dir = 1;
     }
   }
@@ -55,12 +55,30 @@ function setup() {
   music.play();
 }
 
+function spawnPresentAt(x, y) {
+  var p = new Entity('assets/present.png');
+  p.x = x;
+  p.y = y;
+  p.yvel = 2;
+  p.scl = 0.1;
+  p.load();
+  presents.push(p);
+}
+
+function spawnCandyAt(x, y) {
+  var c = new Entity('assets/candy.png');
+  c.x = x;
+  c.y = y;
+  c.yvel = -4;
+  c.scl = 0.25;
+  c.load();
+  candy.push(c);
+}
+
 function keyPressed() {
   if (keyCode === 32 && candy.length < 1) {
     bellsound.play();
-    var c = new Candy(santa.x + santa.img.width / 2, santa.y - santa.img.height / 2);
-    c.load();
-    candy.push(c);
+    spawnCandyAt(santa.x + santa.img.width / 2, santa.y - santa.img.height / 2);
   }  
 }
 
@@ -93,11 +111,9 @@ function draw() {
   // elves throw presents randomly
   if (random(1000) < 32 - liveElves.length && liveElves.length >= 1) {
     var elf = random(liveElves);
-    var p = new Present(
+    spawnPresentAt(
       elf.x + elf.img.width * elf.scl / 2 - 12,
       elf.y + elf.img.height * elf.scl / 2 - 12);
-    p.load();
-    presents.push(p);
   }
   
   // update and draw presents
@@ -116,7 +132,7 @@ function draw() {
     else {
       // candy with elves
       for (var j = 0; j < liveElves.length; j++) {
-        if (Entity.prototype.collidesWith.call(liveElves[j], candy[i])) {
+        if (liveElves[j].collidesWith(candy[i])) {
           liveElves[j].alive = false;
           score += 10;
           candyToRemove.push(i);
@@ -132,7 +148,7 @@ function draw() {
   }
   for (var i = 0; i < presents.length; i++)
   {
-    if (Entity.prototype.collidesWith.call(presents[i], santa)) {
+    if (santa.collidesWith(presents[i])) {
       console.log('ouch!');
     }
   }
