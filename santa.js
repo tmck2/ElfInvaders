@@ -1,7 +1,11 @@
 var Santa = function () {
   this.setup = function() {
-    this.x = (width - this.img.width) / 2;
-    this.y = height - this.img.height * 1.2;
+    this.frames = 4;
+
+    Entity.prototype.setup.call(this);
+
+    this.x = (width - this.width) / 2;
+    this.y = height - this.height * 1.2;
   }
 
   this.update = function() {
@@ -18,9 +22,9 @@ var Santa = function () {
 
     Entity.prototype.update.call(this);
 
-    this.x = constrain(this.x, 0, width - this.img.width);
+    this.x = constrain(this.x, 0, width - this.width);
   }
 }
 
-Santa.prototype = new Entity('assets/santa40.gif');
+Santa.prototype = new Entity('assets/santa40.png');
 Santa.prototype.constructor = Santa;

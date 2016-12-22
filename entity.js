@@ -6,17 +6,24 @@ var Entity = function(imageUrl) {
   this.yvel = 0;
   this.scl = 1;
   this.imageUrl = imageUrl;
+  this.currentFrame = 1;
+  this.frames = 1;
 }
 
 Entity.prototype = { 
   collidesWith: function(obj) {
-    w1 = this.img.width * this.scl / 2;
-    w2 = obj.img.width * obj.scl / 2;
+    var width = this.width || this.img.width;
+    var height = this.height || this.img.height;
+    var objWidth = obj.width || obj.img.width;
+    var objHeight = obj.height || obj.img.height;
+
+    w1 = width * this.scl / 2;
+    w2 = objWidth * obj.scl / 2;
     cx1 = w1 + this.x;
     cx2 = w2 + obj.x;
     
-    h1 = this.img.height * this.scl / 2;
-    h2 = obj.img.height * obj.scl / 2;
+    h1 = height * this.scl / 2;
+    h2 = objHeight * obj.scl / 2;
     cy1 = h1 + this.y;
     cy2 = h2 + obj.y;
     
@@ -29,22 +36,33 @@ Entity.prototype = {
   },
 
   draw: function() {
+    var width = this.width || this.img.width;
+    var height = this.height || this.img.height;
+
     if (this.facing < 0) {
-      translate(this.x + this.img.width, this.y);
+      translate(this.x + width, this.y);
       scale(-this.scl, this.scl);
     } else {
       translate(this.x, this.y);
       scale(this.scl, this.scl);
     }
-    image(this.img, 0, 0, this.img.width, this.img.height);
+    image(this.img, (this.currentFrame-1)*this.width, 0, width, height, 0, 0, width, height);
     resetMatrix();
   },
 
   update: function() {
     this.x += this.xvel;
     this.y += this.yvel;
+
+    if ((frameCount % 6) == 0) {
+      this.currentFrame++;
+      if (this.currentFrame > this.frames)
+        this.currentFrame = 1;
+    }
   },
 
   setup: function() {
+    this.width = this.img.width / this.frames;
+    this.height = this.img.height;
   }
 }

@@ -25,6 +25,7 @@ function preload() {
 }
 
 function nextWave() {
+  musicRate = 1;
   var dx = 520 / 8;
   for (var j = 0; j < 4; j++) {
     for (var i = 0; i < 8; i++) {
@@ -78,7 +79,7 @@ function spawnCandyAt(x, y) {
 function keyPressed() {
   if (keyCode === 32 && candy.length < 1) {
     bellsound.play();
-    spawnCandyAt(santa.x + santa.img.width / 2, santa.y - santa.img.height / 2);
+    spawnCandyAt(santa.x + santa.width / 2, santa.y - santa.height / 2);
   }  
 }
 
