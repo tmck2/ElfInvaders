@@ -7,7 +7,6 @@ var presents = [];
 var nomsound;
 var bellsound;
 var music;
-var musicRate = 1.0;
 
 function preload() {
   nomsound = loadSound('assets/nom.wav');
@@ -25,7 +24,6 @@ function preload() {
 }
 
 function nextWave() {
-  musicRate = 1;
   var dx = 520 / 8;
   for (var j = 0; j < 4; j++) {
     for (var i = 0; i < 8; i++) {
@@ -141,8 +139,7 @@ function draw() {
           liveElves.forEach(function(e) {
             e.xSpeed += 0.05;
           })
-          musicRate += 0.01;
-          music.rate(musicRate);
+          break;
         }
       }
     }
