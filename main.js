@@ -2,15 +2,18 @@ var santa = new Santa();
 var flakes = [];
 var candy = [];
 var elves = [];
-var score = 0;
+var explosions = [];
 var presents = [];
+var score = 0;
 var nomsound;
 var bellsound;
+var boomsound;
 var music;
 
 function preload() {
   nomsound = loadSound('assets/nom.wav');
   bellsound = loadSound('assets/bell.wav');
+  boomsound = loadSound('assets/boom.wav');
   music = loadSound('assets/music.mp3');
   santa.load();
   for (var j = 0; j < 4; j++) {
@@ -48,10 +51,10 @@ function setup() {
 
   nextWave();
     
-  music.setVolume(16.0);
-  music.jump(5);
-  music.loop(5);
-  music.play();
+  //music.setVolume(16.0);
+  //music.jump(5);
+  //music.loop(5);
+  //music.play();
 }
 
 function spawnPresentAt(x, y) {
@@ -72,6 +75,11 @@ function spawnCandyAt(x, y) {
   c.scl = 0.25;
   c.load();
   candy.push(c);
+}
+
+function spawnExplosion(x, y) {
+  var e = new Explosion(x, y);
+  explosions.push(e);
 }
 
 function keyPressed() {
@@ -105,6 +113,15 @@ function draw() {
   for (var i = 0; i < liveElves.length; i++) {
     liveElves[i].update();
     liveElves[i].draw();
+  }
+
+  // explosions
+  explosionsToRemove = [];
+  for (var i = 0; i < explosions.length; i++) {
+    explosions[i].update();
+    explosions[i].draw();
+    if (explosions[i].age > 30)
+      explosionsToRemove.push(i);
   }
   
   // elves throw presents randomly
@@ -152,7 +169,8 @@ function draw() {
     }
     else if (santa.collidesWith(presents[i])) {
       presentsToRemove.push(i);
-      console.log('ouch!');
+      spawnExplosion(presents[i].x, presents[i].y + santa.height / 2);
+      boomsound.play();
     }
   }
   
@@ -162,6 +180,9 @@ function draw() {
   }
   for (var i = 0; i < presentsToRemove.length; i++) {
     presents.splice(presentsToRemove[i],1);
+  }
+  for (var i = 0; i < explosionsToRemove.length; i++) {
+    explosions.splice(explosionsToRemove[i],1);
   }
 
   if (liveElves.length <= 0)
