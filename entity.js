@@ -1,4 +1,21 @@
+var EntityCollection = function() {}
+
+EntityCollection.prototype = new Array();
+
+EntityCollection.prototype.remove = function(pred) {
+  var itemsToRemove = [];
+  for (var i = 0; i < this.length; i++) {
+    if (pred(this[i])) {
+      itemsToRemove.push(i);
+    }
+  }
+  for (i = 0; i < itemsToRemove.length; i++) {
+    this.splice(itemsToRemove[i],1);
+  }
+}
+
 var Entity = function(imageUrl) {
+  this.alive = true;
   this.facing = 1;
   this.x = 0;
   this.y = 0;

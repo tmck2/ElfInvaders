@@ -1,9 +1,9 @@
 var santa = new Santa();
 var flakes = [];
-var candy = [];
+var candy = new EntityCollection();
+var explosions = new EntityCollection();
+var presents = new EntityCollection();
 var elves = [];
-var explosions = [];
-var presents = [];
 var score = 0;
 var nomsound;
 var bellsound;
@@ -120,8 +120,6 @@ function draw() {
   for (var i = 0; i < explosions.length; i++) {
     explosions[i].update();
     explosions[i].draw();
-    if (explosions[i].age > 30)
-      explosionsToRemove.push(i);
   }
   
   // elves throw presents randomly
@@ -139,12 +137,10 @@ function draw() {
   });
   
   // collisions
-  candyToRemove = [];
-  presentsToRemove = [];
   for (var i = 0; i < candy.length; i++) {
     // candy off the top of the screen
     if (candy[i].y + candy[i].img.height * candy[i].scl < 0) {
-      candyToRemove.push(i);
+      candy[i].alive = false;
     }
     else {
       // candy with elves
@@ -152,38 +148,34 @@ function draw() {
         if (liveElves[j].collidesWith(candy[i])) {
           liveElves[j].alive = false;
           score += 10;
-          candyToRemove.push(i);
+          candy[i].alive = false;
           nomsound.play();
-          liveElves.forEach(function(e) {
-            e.xSpeed += 0.05;
-          })
           break;
         }
       }
     }
   }
+  for (var i = 0; i < liveElves.length; i++) {
+    if (santa.collidesWith(liveElves[i])) {
+      nextWave();
+    }
+  }
   for (var i = 0; i < presents.length; i++)
   {
     if (presents.y > height) {
-      presentsToRemove.push(i);
+      presents[i].alive = false;
     }
     else if (santa.collidesWith(presents[i])) {
-      presentsToRemove.push(i);
+      presents[i].alive = false;
       spawnExplosion(presents[i].x, presents[i].y + santa.height / 2);
       boomsound.play();
     }
   }
   
   // remove dead entities
-  for (var i = 0; i < candyToRemove.length; i++) {
-    candy.splice(candyToRemove[i],1);
-  }
-  for (var i = 0; i < presentsToRemove.length; i++) {
-    presents.splice(presentsToRemove[i],1);
-  }
-  for (var i = 0; i < explosionsToRemove.length; i++) {
-    explosions.splice(explosionsToRemove[i],1);
-  }
+  candy.remove(function(c) { return !c.alive; });
+  presents.remove(function(p) { return !p.alive; });
+  explosions.remove(function(e) { return e.age > 30; });
 
   if (liveElves.length <= 0)
     nextWave();
