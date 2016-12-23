@@ -51,10 +51,10 @@ function setup() {
 
   nextWave();
     
-  //music.setVolume(16.0);
-  //music.jump(5);
-  //music.loop(5);
-  //music.play();
+  music.setVolume(8.0);
+  music.jump(5);
+  music.loop(5);
+  music.play();
 }
 
 function spawnPresentAt(x, y) {
