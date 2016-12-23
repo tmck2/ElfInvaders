@@ -123,6 +123,7 @@ function draw() {
   
   // collisions
   candyToRemove = [];
+  presentsToRemove = [];
   for (var i = 0; i < candy.length; i++) {
     // candy off the top of the screen
     if (candy[i].y + candy[i].img.height * candy[i].scl < 0) {
@@ -146,7 +147,11 @@ function draw() {
   }
   for (var i = 0; i < presents.length; i++)
   {
-    if (santa.collidesWith(presents[i])) {
+    if (presents.y > height) {
+      presentsToRemove.push(i);
+    }
+    else if (santa.collidesWith(presents[i])) {
+      presentsToRemove.push(i);
       console.log('ouch!');
     }
   }
@@ -154,6 +159,9 @@ function draw() {
   // remove dead entities
   for (var i = 0; i < candyToRemove.length; i++) {
     candy.splice(candyToRemove[i],1);
+  }
+  for (var i = 0; i < presentsToRemove.length; i++) {
+    presents.splice(presentsToRemove[i],1);
   }
 
   if (liveElves.length <= 0)
