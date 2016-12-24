@@ -11,17 +11,21 @@ var boomsound;
 var music;
 
 function preload() {
-  nomsound = loadSound('assets/nom.wav');
-  bellsound = loadSound('assets/bell.wav');
-  boomsound = loadSound('assets/boom.wav');
-  music = loadSound('assets/music.mp3');
-  santa.load();
+  nomsound = resourceManager.getSound('nom.wav');
+  bellsound = resourceManager.getSound('bell.wav');
+  boomsound = resourceManager.getSound('boom.wav');
+  music = resourceManager.getSound('music.mp3');
+  resourceManager.getImage('elf.png');
+  resourceManager.getImage('santa40.png');
+  resourceManager.getImage('present.png');
+  resourceManager.getImage('candy.png');
+  
   for (var j = 0; j < 4; j++) {
     for (var i = 0; i < 8; i++) {
         var ix = j*8+i;
         elves[ix] = new Elf();
         elves[ix].alive = false;
-        elves[ix].load();
+        elves[ix].img = resourceManager.getImage('elf.png');
     }
   }
 }
@@ -43,8 +47,6 @@ function nextWave() {
 function setup() {
   createCanvas(640,480);
 
-  santa.setup();
-
   for (var i = 0; i < 500; i++) {
     flakes[i] = new SnowFlake();
   }
@@ -58,22 +60,20 @@ function setup() {
 }
 
 function spawnPresentAt(x, y) {
-  var p = new Entity('assets/present.png');
+  var p = new Entity('present.png');
   p.x = x;
   p.y = y;
   p.yvel = 2;
   p.scl = 0.1;
-  p.load();
   presents.push(p);
 }
 
 function spawnCandyAt(x, y) {
-  var c = new Entity('assets/candy.png');
+  var c = new Entity('candy.png');
   c.x = x;
   c.y = y;
   c.yvel = -4;
   c.scl = 0.25;
-  c.load();
   candy.push(c);
 }
 
@@ -85,7 +85,7 @@ function spawnExplosion(x, y) {
 function keyPressed() {
   if (keyCode === 32 && candy.length < 1) {
     bellsound.play();
-    spawnCandyAt(santa.x + santa.width / 2, santa.y - santa.height / 2);
+    spawnCandyAt(santa.x + santa.getSize().x / 2, santa.y - santa.getSize().y / 2);
   }  
 }
 
@@ -139,7 +139,7 @@ function draw() {
   // collisions
   for (var i = 0; i < candy.length; i++) {
     // candy off the top of the screen
-    if (candy[i].y + candy[i].img.height * candy[i].scl < 0) {
+    if (candy[i].y + candy[i].getSize().y * candy[i].scl < 0) {
       candy[i].alive = false;
     }
     else {
@@ -167,7 +167,7 @@ function draw() {
     }
     else if (santa.collidesWith(presents[i])) {
       presents[i].alive = false;
-      spawnExplosion(presents[i].x, presents[i].y + santa.height / 2);
+      spawnExplosion(presents[i].x, presents[i].y + santa.getSize().y / 2);
       boomsound.play();
     }
   }

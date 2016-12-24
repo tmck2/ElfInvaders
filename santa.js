@@ -1,13 +1,4 @@
 var Santa = function () {
-  this.setup = function() {
-    this.frames = 4;
-
-    Entity.prototype.setup.call(this);
-
-    this.x = (width - this.width) / 2;
-    this.y = height - this.height * 1.2;
-  }
-
   this.update = function() {
     if (keyIsDown(LEFT_ARROW)) {
       this.facing = -1;
@@ -22,9 +13,10 @@ var Santa = function () {
 
     Entity.prototype.update.call(this);
 
-    this.x = constrain(this.x, 0, width - this.width);
+    this.x = constrain(this.x, 0, width - this.getSize().x);
+    this.y = height - this.getSize().y * 1.1;
   }
 }
 
-Santa.prototype = new Entity('assets/santa40.png');
+Santa.prototype = new Entity('santa40.png', 4);
 Santa.prototype.constructor = Santa;

@@ -14,5 +14,5 @@ var Elf = function() {
   }
 }
 
-Elf.prototype = new Entity('assets/elf.png');
+Elf.prototype = new Entity('elf.png');
 Elf.prototype.constructor = Elf;
